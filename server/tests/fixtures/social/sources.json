@@ -1,0 +1,26 @@
+{
+  "note": "B站公开切片，仅本地测试裁切/试听；不随仓库分发 mp4。用 yt-dlp 按 bvid 自行下载。",
+  "samples": [
+    {
+      "bvid": "BV1hGsW6SEYV",
+      "title": "陪玩竟然要投诉店长（飞禾电竞）",
+      "url": "https://www.bilibili.com/video/BV1hGsW6SEYV",
+      "author": "清风丨飞禾电竞",
+      "test_clip": { "start_ms": 15000, "end_ms": 75000, "wav": "clip_peiwan_complaint_15_75s.wav" }
+    },
+    {
+      "bvid": "BV1BUsE6UEch",
+      "title": "东东电竞开庭：老板 26 页 PPT 投诉",
+      "url": "https://www.bilibili.com/video/BV1BUsE6UEch",
+      "author": "胖头鱼QA",
+      "test_clip": { "start_ms": 20000, "end_ms": 90000, "wav": "clip_court_dispute_20_90s.wav" }
+    },
+    {
+      "bvid": "BV1A7sS6GEiX",
+      "title": "三角洲护航：抢对面老板、强行带撤（局内语音+解说）",
+      "url": "https://www.bilibili.com/video/BV1A7sS6GEiX",
+      "author": "力为来了-三角洲行动",
+      "test_clip": { "start_ms": 20000, "end_ms": 120000, "wav": "clip_delta_escort_20_120s.wav" }
+    }
+  ]
+}

@@ -1,0 +1,343 @@
+{
+  "start_ms": 20000,
+  "end_ms": 120000,
+  "audio_layout": "mono_mixed",
+  "coverage": [
+    {
+      "start_ms": 20000,
+      "end_ms": 120000
+    }
+  ],
+  "utterances": [
+    {
+      "start_ms": 20000,
+      "end_ms": 23440,
+      "id": 1,
+      "speaker": "player",
+      "text": "空的不能你看看这个楼梯上面呢"
+    },
+    {
+      "start_ms": 23440,
+      "end_ms": 25561,
+      "id": 2,
+      "speaker": "player",
+      "text": "你猜猜楼梯上面这个人是谁呢"
+    },
+    {
+      "start_ms": 25560,
+      "end_ms": 27080,
+      "id": 3,
+      "speaker": "player",
+      "text": "不是的哥我求你了"
+    },
+    {
+      "start_ms": 27080,
+      "end_ms": 28160,
+      "id": 4,
+      "speaker": "player",
+      "text": "你放过我吧"
+    },
+    {
+      "start_ms": 28160,
+      "end_ms": 29121,
+      "id": 5,
+      "speaker": "player",
+      "text": "我这把车不出去"
+    },
+    {
+      "start_ms": 29120,
+      "end_ms": 30360,
+      "id": 6,
+      "speaker": "player",
+      "text": "哥就投入我了"
+    },
+    {
+      "start_ms": 30360,
+      "end_ms": 31560,
+      "id": 7,
+      "speaker": "player",
+      "text": "我求你了哥"
+    },
+    {
+      "start_ms": 31560,
+      "end_ms": 33320,
+      "id": 8,
+      "speaker": "player",
+      "text": "哎呀那行兄呐"
+    },
+    {
+      "start_ms": 33320,
+      "end_ms": 34360,
+      "id": 9,
+      "speaker": "player",
+      "text": "带你车一把"
+    },
+    {
+      "start_ms": 35920,
+      "end_ms": 39241,
+      "id": 10,
+      "speaker": "player",
+      "text": "哎呀我感谢哥感谢哥好救好救好救"
+    },
+    {
+      "start_ms": 39240,
+      "end_ms": 41200,
+      "id": 11,
+      "speaker": "player",
+      "text": "哎呀我感谢感谢我哥"
+    },
+    {
+      "start_ms": 41200,
+      "end_ms": 43360,
+      "id": 12,
+      "speaker": "player",
+      "text": "最晚没有你们指定是臭塔里了"
+    },
+    {
+      "start_ms": 43360,
+      "end_ms": 44320,
+      "id": 13,
+      "speaker": "player",
+      "text": "感谢感谢"
+    },
+    {
+      "start_ms": 44320,
+      "end_ms": 45520,
+      "id": 14,
+      "speaker": "player",
+      "text": "我来"
+    },
+    {
+      "start_ms": 45520,
+      "end_ms": 49280,
+      "id": 15,
+      "speaker": "system",
+      "text": "这不会是上把那个老板来了吧"
+    },
+    {
+      "start_ms": 49280,
+      "end_ms": 51721,
+      "id": 16,
+      "speaker": "system",
+      "text": "哈喽哈喽你们见不见富豪啊"
+    },
+    {
+      "start_ms": 54720,
+      "end_ms": 56280,
+      "id": 17,
+      "speaker": "system",
+      "text": "好嘞哈喽子啊"
+    },
+    {
+      "start_ms": 56280,
+      "end_ms": 58360,
+      "id": 18,
+      "speaker": "player",
+      "text": "我是豆腐家小哥家软弄意识力"
+    },
+    {
+      "start_ms": 58360,
+      "end_ms": 59560,
+      "id": 19,
+      "speaker": "player",
+      "text": "欢迎来豆腐玩个"
+    },
+    {
+      "start_ms": 59560,
+      "end_ms": 61040,
+      "id": 20,
+      "speaker": "player",
+      "text": "哈喽呀兄弟啊"
+    },
+    {
+      "start_ms": 61040,
+      "end_ms": 63481,
+      "id": 21,
+      "speaker": "player",
+      "text": "我们去祭典活好吧"
+    },
+    {
+      "start_ms": 63480,
+      "end_ms": 65121,
+      "id": 22,
+      "speaker": "player",
+      "text": "那就Let's go"
+    },
+    {
+      "start_ms": 65120,
+      "end_ms": 65761,
+      "id": 23,
+      "speaker": "player",
+      "text": "哥"
+    },
+    {
+      "start_ms": 65760,
+      "end_ms": 66720,
+      "id": 24,
+      "speaker": "player",
+      "text": "这前面有脚"
+    },
+    {
+      "start_ms": 66720,
+      "end_ms": 68240,
+      "id": 25,
+      "speaker": "player",
+      "text": "哎麦小文的早哥有缘的"
+    },
+    {
+      "start_ms": 68240,
+      "end_ms": 69240,
+      "id": 26,
+      "speaker": "player",
+      "text": "我去那么唱个"
+    },
+    {
+      "start_ms": 69240,
+      "end_ms": 69920,
+      "id": 27,
+      "speaker": "player",
+      "text": "啥意思啊"
+    },
+    {
+      "start_ms": 74160,
+      "end_ms": 74960,
+      "id": 28,
+      "speaker": "player",
+      "text": "说我帮你一枪"
+    },
+    {
+      "start_ms": 74960,
+      "end_ms": 82720,
+      "id": 29,
+      "speaker": "player",
+      "text": "兄弟們,這波操作多虧了我喜歡的雷伯VTR-RT無雙鼠標"
+    },
+    {
+      "start_ms": 82720,
+      "end_ms": 86320,
+      "id": 30,
+      "speaker": "player",
+      "text": "這鼠標是主播最近的新歡,已經是艾布士手了"
+    },
+    {
+      "start_ms": 86320,
+      "end_ms": 89600,
+      "id": 31,
+      "speaker": "player",
+      "text": "先說模具,中大手萬劍油,背高比狗屁王更低"
+    },
+    {
+      "start_ms": 89600,
+      "end_ms": 92400,
+      "id": 32,
+      "speaker": "player",
+      "text": "沒有那麼頂手,抓握、爬握、止握都能加速"
+    },
+    {
+      "start_ms": 92400,
+      "end_ms": 96961,
+      "id": 33,
+      "speaker": "player",
+      "text": "收腰收的剛好,拉槍不脫手,輕膚防滑塗層,汗手福音"
+    },
+    {
+      "start_ms": 96960,
+      "end_ms": 100560,
+      "id": 34,
+      "speaker": "player",
+      "text": "而且雷伯自演的VTCS無觸點按鍵系統"
+    },
+    {
+      "start_ms": 100560,
+      "end_ms": 102961,
+      "id": 35,
+      "speaker": "player",
+      "text": "左右鍵獨立可調,易數千感"
+    },
+    {
+      "start_ms": 102960,
+      "end_ms": 104881,
+      "id": 36,
+      "speaker": "player",
+      "text": "觸發形成RT-FUWE形成"
+    },
+    {
+      "start_ms": 104880,
+      "end_ms": 105680,
+      "id": 37,
+      "speaker": "player",
+      "text": "點擊觸感"
+    },
+    {
+      "start_ms": 105680,
+      "end_ms": 106641,
+      "id": 38,
+      "speaker": "player",
+      "text": "震動反饋"
+    },
+    {
+      "start_ms": 106640,
+      "end_ms": 107920,
+      "id": 39,
+      "speaker": "player",
+      "text": "全鬥輪單獨調"
+    },
+    {
+      "start_ms": 107920,
+      "end_ms": 109400,
+      "id": 40,
+      "speaker": "player",
+      "text": "壓槍跟手的離譜"
+    },
+    {
+      "start_ms": 109400,
+      "end_ms": 111441,
+      "id": 41,
+      "speaker": "player",
+      "text": "按鍵確認感不是靠馬達下陣"
+    },
+    {
+      "start_ms": 111440,
+      "end_ms": 112961,
+      "id": 42,
+      "speaker": "player",
+      "text": "雙馬達震動加購"
+    },
+    {
+      "start_ms": 112960,
+      "end_ms": 114961,
+      "id": 43,
+      "speaker": "player",
+      "text": "震動加音效一起給反饋"
+    },
+    {
+      "start_ms": 114960,
+      "end_ms": 115801,
+      "id": 44,
+      "speaker": "player",
+      "text": "按下確認一下"
+    },
+    {
+      "start_ms": 115800,
+      "end_ms": 117560,
+      "id": 45,
+      "speaker": "player",
+      "text": "各燈確認感直接拉滿"
+    },
+    {
+      "start_ms": 117560,
+      "end_ms": 120000,
+      "id": 46,
+      "speaker": "player",
+      "text": "標準版就擁有以上我的完整功能"
+    }
+  ],
+  "media_issues": [
+    {
+      "start_ms": 20000,
+      "end_ms": 120000,
+      "track": "system",
+      "reason": "mono_mixed_no_separate_track"
+    }
+  ]
+}

@@ -1,0 +1,321 @@
+{
+  "start_ms": 15000,
+  "end_ms": 75000,
+  "audio_layout": "mono_mixed",
+  "coverage": [
+    {
+      "start_ms": 15000,
+      "end_ms": 75000
+    }
+  ],
+  "utterances": [
+    {
+      "start_ms": 15840,
+      "end_ms": 17560,
+      "id": 1,
+      "speaker": "player",
+      "text": "咱有話好好說行不"
+    },
+    {
+      "start_ms": 17560,
+      "end_ms": 19720,
+      "id": 2,
+      "speaker": "player",
+      "text": "先把和老闆的問題解決了"
+    },
+    {
+      "start_ms": 19720,
+      "end_ms": 22320,
+      "id": 3,
+      "speaker": "player",
+      "text": "但是我啥也沒在你偷竖我幹啥"
+    },
+    {
+      "start_ms": 22320,
+      "end_ms": 23880,
+      "id": 4,
+      "speaker": "player",
+      "text": "所以到底啥情況啊"
+    },
+    {
+      "start_ms": 23880,
+      "end_ms": 25800,
+      "id": 5,
+      "speaker": "player",
+      "text": "咱們店不是有個對賭的單子嗎"
+    },
+    {
+      "start_ms": 25800,
+      "end_ms": 27281,
+      "id": 6,
+      "speaker": "player",
+      "text": "就是老闆摸多少紅"
+    },
+    {
+      "start_ms": 27280,
+      "end_ms": 28680,
+      "id": 7,
+      "speaker": "player",
+      "text": "我們就要殺多少人"
+    },
+    {
+      "start_ms": 28680,
+      "end_ms": 29560,
+      "id": 8,
+      "speaker": "player",
+      "text": "然後呢"
+    },
+    {
+      "start_ms": 29560,
+      "end_ms": 31880,
+      "id": 9,
+      "speaker": "player",
+      "text": "你倆是真偷被啥狗被偷竖了嗎"
+    },
+    {
+      "start_ms": 31880,
+      "end_ms": 34081,
+      "id": 10,
+      "speaker": "player",
+      "text": "我倆一把殺了十一個青屠了"
+    },
+    {
+      "start_ms": 34080,
+      "end_ms": 35600,
+      "id": 11,
+      "speaker": "player",
+      "text": "那這應該夠了"
+    },
+    {
+      "start_ms": 35600,
+      "end_ms": 37241,
+      "id": 12,
+      "speaker": "player",
+      "text": "咱的老闆讀書了來著"
+    },
+    {
+      "start_ms": 37240,
+      "end_ms": 38600,
+      "id": 13,
+      "speaker": "player",
+      "text": "你們偷竖他是嗎"
+    },
+    {
+      "start_ms": 38600,
+      "end_ms": 39160,
+      "id": 14,
+      "speaker": "player",
+      "text": "不是"
+    },
+    {
+      "start_ms": 39160,
+      "end_ms": 40081,
+      "id": 15,
+      "speaker": "player",
+      "text": "老闆沒說"
+    },
+    {
+      "start_ms": 40080,
+      "end_ms": 41000,
+      "id": 16,
+      "speaker": "player",
+      "text": "我倆輸了"
+    },
+    {
+      "start_ms": 41000,
+      "end_ms": 41561,
+      "id": 17,
+      "speaker": "player",
+      "text": "咋的"
+    },
+    {
+      "start_ms": 45000,
+      "end_ms": 48000,
+      "id": 18,
+      "speaker": "player",
+      "text": "1811个头"
+    },
+    {
+      "start_ms": 48000,
+      "end_ms": 49720,
+      "id": 19,
+      "speaker": "system",
+      "text": "那老板运气再好"
+    },
+    {
+      "start_ms": 49720,
+      "end_ms": 51880,
+      "id": 20,
+      "speaker": "player",
+      "text": "也不能一把摸十几个红吧"
+    },
+    {
+      "start_ms": 51880,
+      "end_ms": 53000,
+      "id": 21,
+      "speaker": "player",
+      "text": "按理来说"
+    },
+    {
+      "start_ms": 53000,
+      "end_ms": 55000,
+      "id": 22,
+      "speaker": "player",
+      "text": "他这把其实一个红都没摸到"
+    },
+    {
+      "start_ms": 55000,
+      "end_ms": 56520,
+      "id": 23,
+      "speaker": "player",
+      "text": "那一个红没摸到"
+    },
+    {
+      "start_ms": 56519,
+      "end_ms": 57640,
+      "id": 24,
+      "speaker": "player",
+      "text": "你们家属的"
+    },
+    {
+      "start_ms": 57640,
+      "end_ms": 58880,
+      "id": 25,
+      "speaker": "player",
+      "text": "这把亲完图之后"
+    },
+    {
+      "start_ms": 58880,
+      "end_ms": 60200,
+      "id": 26,
+      "speaker": "system",
+      "text": "我给老板刮地皮"
+    },
+    {
+      "start_ms": 60200,
+      "end_ms": 61320,
+      "id": 27,
+      "speaker": "player",
+      "text": "刮到一个小红"
+    },
+    {
+      "start_ms": 61320,
+      "end_ms": 63080,
+      "id": 28,
+      "speaker": "system",
+      "text": "我就给这个小红给老板了"
+    },
+    {
+      "start_ms": 63080,
+      "end_ms": 63920,
+      "id": 29,
+      "speaker": "player",
+      "text": "没毛啊"
+    },
+    {
+      "start_ms": 63920,
+      "end_ms": 65040,
+      "id": 30,
+      "speaker": "player",
+      "text": "听完摸到的红"
+    },
+    {
+      "start_ms": 65040,
+      "end_ms": 66600,
+      "id": 31,
+      "speaker": "system",
+      "text": "就应该全部给老板"
+    },
+    {
+      "start_ms": 66600,
+      "end_ms": 67800,
+      "id": 32,
+      "speaker": "player",
+      "text": "哪吒差一个红"
+    },
+    {
+      "start_ms": 67800,
+      "end_ms": 68680,
+      "id": 33,
+      "speaker": "player",
+      "text": "还差十个"
+    },
+    {
+      "start_ms": 68680,
+      "end_ms": 69960,
+      "id": 34,
+      "speaker": "player",
+      "text": "你们是这么说的"
+    },
+    {
+      "start_ms": 69960,
+      "end_ms": 71121,
+      "id": 35,
+      "speaker": "system",
+      "text": "老板一拿到红"
+    },
+    {
+      "start_ms": 71120,
+      "end_ms": 72401,
+      "id": 36,
+      "speaker": "player",
+      "text": "肉眼可见的兴奋"
+    },
+    {
+      "start_ms": 72400,
+      "end_ms": 73840,
+      "id": 37,
+      "speaker": "player",
+      "text": "当时就问我们知不知道"
+    },
+    {
+      "start_ms": 73840,
+      "end_ms": 75000,
+      "id": 38,
+      "speaker": "player",
+      "text": "当年陈导仔用二"
+    }
+  ],
+  "media_issues": [
+    {
+      "start_ms": 15000,
+      "end_ms": 75000,
+      "track": "system",
+      "reason": "mono_mixed_no_separate_track"
+    }
+  ],
+  "analysis": {
+    "candidate_count": 0,
+    "events": [],
+    "review": [
+      {
+        "id": 3,
+        "start_ms": 19720,
+        "end_ms": 22320,
+        "reason": "纠纷语气待复核"
+      },
+      {
+        "id": 5,
+        "start_ms": 23880,
+        "end_ms": 25800,
+        "reason": "纠纷语气待复核"
+      },
+      {
+        "id": 9,
+        "start_ms": 29560,
+        "end_ms": 31880,
+        "reason": "纠纷语气待复核"
+      },
+      {
+        "id": 13,
+        "start_ms": 37240,
+        "end_ms": 38600,
+        "reason": "纠纷语气待复核"
+      }
+    ],
+    "coverage_gaps": [],
+    "target_utterances": 33,
+    "analyzed_utterances": 33,
+    "status": "needs_review"
+  }
+}

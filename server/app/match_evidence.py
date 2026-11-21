@@ -39,6 +39,14 @@ class NoRedirect(HTTPRedirectHandler):
 
 
 class ChatClassifier:
+    @classmethod
+    def from_environment(cls) -> "ChatClassifier":
+        return cls(
+            os.environ.get("EVIDENCE_MODEL_URL", ""),
+            os.environ.get("EVIDENCE_MODEL", ""),
+            os.environ.get("EVIDENCE_MODEL_API_KEY", ""),
+        )
+
     def __init__(self, url: str, model: str, api_key: str = "") -> None:
         parts = urlsplit(url)
         local = parts.hostname in ("localhost", "127.0.0.1", "::1")
@@ -89,11 +97,7 @@ def main() -> None:
         parser.error("输入文件读取失败或不符合单局分析契约")
 
     try:
-        classifier = ChatClassifier(
-            os.environ.get("EVIDENCE_MODEL_URL", ""),
-            os.environ.get("EVIDENCE_MODEL", ""),
-            os.environ.get("EVIDENCE_MODEL_API_KEY", ""),
-        )
+        classifier = ChatClassifier.from_environment()
         result = analyze_match(match, coverage, utterances, classifier)
     except ValueError:
         parser.error("请检查模型地址、模型名称和发言 ID 是否唯一")

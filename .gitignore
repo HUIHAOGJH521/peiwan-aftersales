@@ -26,3 +26,10 @@ infra/data/
 *.db-shm
 recordings/
 scratch/
+server/tests/fixtures/*.mp4
+server/tests/fixtures/*.wav
+server/tests/fixtures/*.m4a
+server/tests/fixtures/social/*.mp4
+server/tests/fixtures/social/clip_*.wav
+server/tests/fixtures/social/*.raw.json
+server/tests/fixtures/social/delta_escort_transcript.raw.json
