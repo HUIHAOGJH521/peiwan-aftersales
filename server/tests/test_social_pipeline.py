@@ -11,6 +11,7 @@ FIXTURE_DIR = Path(__file__).resolve().parent / "fixtures" / "social"
 MANIFEST = FIXTURE_DIR / "delta_escort_match.json"
 TRANSCRIPT = FIXTURE_DIR / "delta_escort_transcript.json"
 PEIWAN_TRANSCRIPT = FIXTURE_DIR / "peiwan_complaint_transcript.json"
+COURT_TRANSCRIPT = FIXTURE_DIR / "court_dispute_transcript.json"
 FFMPEG = shutil.which(resolve_ffmpeg())
 HAVE_VIDEO = (FIXTURE_DIR / "bili_BV1A7sS6GEiX.mp4").is_file()
 
@@ -74,6 +75,21 @@ class PeiwanComplaintPipelineTests(unittest.TestCase):
         self.assertGreater(analysis["target_utterances"], 0)
         review_reasons = {row["reason"] for row in analysis["review"]}
         self.assertTrue(analysis["review"] and "待复核" in "".join(review_reasons))
+
+
+@unittest.skipUnless(
+    (FIXTURE_DIR / "bili_BV1BUsE6UEch.mp4").is_file() and COURT_TRANSCRIPT.is_file(),
+    "court transcript fixture missing",
+)
+class CourtDisputePipelineTests(unittest.TestCase):
+    def test_aftersales_hearing_lists_boss_complaints(self) -> None:
+        payload = json.loads(COURT_TRANSCRIPT.read_text(encoding="utf-8"))
+        merged = " ".join(row["text"] for row in payload["utterances"])
+        self.assertTrue(any(word in merged for word in ("老板", "老闆", "投诉", "投訴", "押金", "押金")))
+        analysis = payload["analysis"]
+        self.assertGreater(analysis["target_utterances"], 0)
+        self.assertGreaterEqual(len(analysis["review"]), 3)
+        self.assertEqual(analysis["status"], "needs_review")
 
 
 if __name__ == "__main__":

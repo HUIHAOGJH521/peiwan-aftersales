@@ -1,0 +1,117 @@
+{
+  "start_ms": 20000,
+  "end_ms": 90000,
+  "coverage": [
+    {
+      "start_ms": 20000,
+      "end_ms": 90000
+    }
+  ],
+  "utterances": [
+    {
+      "start_ms": 20000,
+      "end_ms": 28121,
+      "id": 1,
+      "speaker": "player",
+      "text": "第一个 你跟你的前女友赴据离 这个可能说暂时证据不足 第二个老板投诉的说你抠了那个那个叫什么连麻的押金"
+    },
+    {
+      "start_ms": 28560,
+      "end_ms": 31160,
+      "id": 2,
+      "speaker": "player",
+      "text": "这个目前暂时证据不足 这个我明天去联系"
+    },
+    {
+      "start_ms": 31560,
+      "end_ms": 38520,
+      "id": 3,
+      "speaker": "player",
+      "text": "ok 第三个老板是又投诉你说 头说老板是偏押金的 但现在目前应该暂时是证据不足"
+    },
+    {
+      "start_ms": 39000,
+      "end_ms": 46960,
+      "id": 4,
+      "speaker": "player",
+      "text": "第四个老板投诉说你这边是开出错了这个人 那这样你这样 那个落叶在那个帖子里边发了老板的这个名字出来"
+    },
+    {
+      "start_ms": 46960,
+      "end_ms": 54760,
+      "id": 5,
+      "speaker": "player",
+      "text": "可能说漏了老板的那个名字对老板造成体验不好了 完了之后这边你给洛叶那边处理了 完了之后给老板写手写个刀线信"
+    },
+    {
+      "start_ms": 55360,
+      "end_ms": 64960,
+      "id": 6,
+      "speaker": "player",
+      "text": "这个啊 成立 第五个老板投诉了你这边那个店长挂朋友圈 这个说是单纯曝光你啊 属于是人者见人 自己见智"
+    },
+    {
+      "start_ms": 65400,
+      "end_ms": 73080,
+      "id": 7,
+      "speaker": "player",
+      "text": "然后第六个说是这个老板投诉你 店大多数都是未成年 暂时政局不足 第七个老板投诉你这边这个"
+    },
+    {
+      "start_ms": 73080,
+      "end_ms": 75080,
+      "id": 8,
+      "speaker": "player",
+      "text": "订单是三成三去猛攻"
+    },
+    {
+      "start_ms": 75080,
+      "end_ms": 78580,
+      "id": 9,
+      "speaker": "player",
+      "text": "目前也是说查明应该是替别的老板来处理"
+    },
+    {
+      "start_ms": 78580,
+      "end_ms": 81080,
+      "id": 10,
+      "speaker": "player",
+      "text": "这个有那个打手的口供啊"
+    },
+    {
+      "start_ms": 81080,
+      "end_ms": 83580,
+      "id": 11,
+      "speaker": "player",
+      "text": "相当于是别的老板的订单"
+    },
+    {
+      "start_ms": 83580,
+      "end_ms": 85580,
+      "id": 12,
+      "speaker": "player",
+      "text": "也的老板当时人可能觉得满意了"
+    },
+    {
+      "start_ms": 85580,
+      "end_ms": 86380,
+      "id": 13,
+      "speaker": "player",
+      "text": "也没来找你"
+    },
+    {
+      "start_ms": 86380,
+      "end_ms": 88380,
+      "id": 14,
+      "speaker": "player",
+      "text": "但是老板知道这事也是纯想曝光"
+    },
+    {
+      "start_ms": 88380,
+      "end_ms": 89880,
+      "id": 15,
+      "speaker": "player",
+      "text": "相当于是新场上的"
+    }
+  ]
+}

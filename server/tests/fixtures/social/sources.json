@@ -13,7 +13,9 @@
       "title": "东东电竞开庭：老板 26 页 PPT 投诉",
       "url": "https://www.bilibili.com/video/BV1BUsE6UEch",
       "author": "胖头鱼QA",
-      "test_clip": { "start_ms": 20000, "end_ms": 90000, "wav": "clip_court_dispute_20_90s.wav" }
+      "test_clip": { "start_ms": 20000, "end_ms": 90000, "wav": "clip_court_dispute_20_90s.wav" },
+      "manifest": "court_dispute_match.json",
+      "transcript": "court_dispute_transcript.json"
     },
     {
       "bvid": "BV1A7sS6GEiX",

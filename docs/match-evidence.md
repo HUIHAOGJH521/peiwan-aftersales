@@ -53,7 +53,7 @@ python -m app.match_recording match.json
 
 使用客户端顺序一致的双轨文件，第一条音轨是打手麦克风，第二条是系统音，文件起点对应清单里的 start_ms。只转写本局范围，缺失文件、音轨或处理失败的区间会反映在双轨覆盖中。试跑按每条轨道解码后的采样长度判断尾部缺口，轨道内部的时间戳断裂还需要在实拍对局中单独核对。
 
-B 站等单轨混音素材试跑时设置 `"audio_layout": "mono_mixed"`（见 [`delta_escort_match.json`](/C:/Users/Windows/Projects/peiwan-aftersales/server/tests/fixtures/social/delta_escort_match.json) 与 [`peiwan_complaint_match.json`](/C:/Users/Windows/Projects/peiwan-aftersales/server/tests/fixtures/social/peiwan_complaint_match.json)）。此时仅用第一条音轨转写，并按关键词粗略标注 `player` / `system`；`media_issues` 会带 `mono_mixed_no_separate_track`，**不能**替代正式双轨验收。
+B 站等单轨混音素材试跑时设置 `"audio_layout": "mono_mixed"`（见 [`delta_escort_match.json`](/C:/Users/Windows/Projects/peiwan-aftersales/server/tests/fixtures/social/delta_escort_match.json)、[`peiwan_complaint_match.json`](/C:/Users/Windows/Projects/peiwan-aftersales/server/tests/fixtures/social/peiwan_complaint_match.json)、[`court_dispute_match.json`](/C:/Users/Windows/Projects/peiwan-aftersales/server/tests/fixtures/social/court_dispute_match.json)）。此时仅用第一条音轨转写。默认 `mono_speaker_policy` 为 `mixed_guess`（按关键词粗分 `player` / `system`）；售后主持念投诉清单时可设 `narrator_as_player`，整段记入打手轨待判定。`media_issues` 会带 `mono_mixed_no_separate_track`，**不能**替代正式双轨验收。
 
 一键转写 + stub 判定试跑（需本地 mp4 与 faster-whisper）：
 

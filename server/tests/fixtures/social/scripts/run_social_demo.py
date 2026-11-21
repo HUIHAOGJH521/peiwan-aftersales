@@ -27,7 +27,14 @@ def stub_classify(ctx: dict) -> dict:
         if any(word in text for word in ("骂", "罵", "脑瘫", "腦殘", "傻逼", "滾", "滚")):
             label = "candidate"
             reason = "命中辱骂关键词"
-        elif any(word in text for word in ("投诉", "投訴", "对赌", "對賭", "人头", "人頭", "矛盾", "偷竖")):
+        elif any(
+            word in text
+            for word in (
+                "投诉", "投訴", "对赌", "對賭", "人头", "人頭", "矛盾", "偷竖",
+                "老板投诉", "老闆投訴", "押金", "押金", "曝光", "证据不足", "證據不足",
+                "开庭", "開庭", "伪证据", "偽證據",
+            )
+        ):
             label = "review"
             reason = "纠纷语气待复核"
         else:
@@ -64,6 +71,7 @@ def transcribe_manifest(manifest: Path, model: str) -> dict:
     payload = json.loads(manifest.read_text(encoding="utf-8-sig"))
     match = Interval(payload["start_ms"], payload["end_ms"])
     layout = payload.get("audio_layout", "dual")
+    mono_policy = payload.get("mono_speaker_policy", "mixed_guess")
     recordings = [
         Recording(item["start_ms"], item["end_ms"], manifest.parent / item["path"])
         for item in payload["recordings"]
@@ -73,11 +81,17 @@ def transcribe_manifest(manifest: Path, model: str) -> dict:
         raise RuntimeError("FFmpeg not found")
     transcriber = LocalWhisper(model, "zh")
     coverage, utterances, issues = transcribe_match(
-        match, recordings, transcriber, ffmpeg=ffmpeg, audio_layout=layout,
+        match,
+        recordings,
+        transcriber,
+        ffmpeg=ffmpeg,
+        audio_layout=layout,
+        mono_speaker_policy=mono_policy,
     )
     return {
         **asdict(match),
         "audio_layout": layout,
+        "mono_speaker_policy": mono_policy,
         "coverage": [asdict(part) for part in coverage],
         "utterances": [asdict(item) for item in utterances],
         "media_issues": issues,

@@ -1,0 +1,11 @@
+{
+  "source_bvid": "BV1BUsE6UEch",
+  "source_url": "https://www.bilibili.com/video/BV1BUsE6UEch",
+  "audio_layout": "mono_mixed",
+  "mono_speaker_policy": "narrator_as_player",
+  "start_ms": 20000,
+  "end_ms": 90000,
+  "recordings": [
+    {"path": "bili_BV1BUsE6UEch.mp4", "start_ms": 0, "end_ms": 339000}
+  ]
+}

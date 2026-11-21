@@ -27,7 +27,7 @@ def guess_mixed_speaker(text: str) -> str:
         marker in text
         for marker in (
             "老板", "老闆", "哈喽", "电话", "你是不是", "全了", "店长", "店長",
-            "投诉", "投訴", "对赌", "對賭", "下单",
+            "投诉", "投訴", "对赌", "對賭", "下单", "开庭", "開庭", "押金", "押金", "曝光",
         )
     )
     player_hits = sum(
@@ -65,9 +65,12 @@ def transcribe_match(
     *,
     ffmpeg: str | None = None,
     audio_layout: str = "dual",
+    mono_speaker_policy: str = "mixed_guess",
 ) -> tuple[list[Interval], list[Utterance], list[dict]]:
     if audio_layout not in ("dual", "mono_mixed"):
         raise ValueError("Unsupported audio layout")
+    if mono_speaker_policy not in ("mixed_guess", "narrator_as_player"):
+        raise ValueError("Unsupported mono speaker policy")
     mono = audio_layout == "mono_mixed"
     clips = [recording for recording in recordings
              if recording.start_ms < match.end_ms and match.start_ms < recording.end_ms]
@@ -122,7 +125,12 @@ def transcribe_match(
                     first = start + math.floor(begin * 1000)
                     last = min(decoded_end, start + math.ceil(finish * 1000))
                     if first < last and text.strip():
-                        label = guess_mixed_speaker(text) if mono else speaker
+                        if not mono:
+                            label = speaker
+                        elif mono_speaker_policy == "narrator_as_player":
+                            label = "player"
+                        else:
+                            label = guess_mixed_speaker(text)
                         utterances.append(Utterance(first, last, len(utterances) + 1,
                                                     label, text.strip()))
         if len(tracks) == 2:
@@ -151,6 +159,7 @@ def main() -> None:
         manifest = json.loads(args.manifest.read_text(encoding="utf-8-sig"))
         match = Interval(manifest["start_ms"], manifest["end_ms"])
         layout = manifest.get("audio_layout", "dual")
+        mono_policy = manifest.get("mono_speaker_policy", "mixed_guess")
         recordings = [
             Recording(item["start_ms"], item["end_ms"], args.manifest.parent / item["path"])
             for item in manifest["recordings"]
@@ -174,13 +183,19 @@ def main() -> None:
         parser.error("无法加载本地 Whisper 模型，请检查缓存或 --model 路径")
     try:
         coverage, utterances, issues = transcribe_match(
-            match, recordings, transcriber, ffmpeg=ffmpeg, audio_layout=layout,
+            match,
+            recordings,
+            transcriber,
+            ffmpeg=ffmpeg,
+            audio_layout=layout,
+            mono_speaker_policy=mono_policy,
         )
     except ValueError:
         parser.error("本局录像时间范围发生重叠，请检查录像清单")
     result = {
         **asdict(match),
         "audio_layout": layout,
+        "mono_speaker_policy": mono_policy,
         "coverage": [asdict(part) for part in coverage],
         "utterances": [asdict(item) for item in utterances],
         "media_issues": issues,
