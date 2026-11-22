@@ -14,6 +14,20 @@
 
 在 server 目录运行 `python -m unittest discover -s tests -v`。试跑入口为 `python -m app.match_evidence input.json`。配置 EVIDENCE_MODEL_URL（完整 Chat Completions 地址）和 EVIDENCE_MODEL，鉴权令牌通过可选的 EVIDENCE_MODEL_API_KEY 注入。该入口会把输入范围内的对话文字发给显式指定的模型。测试默认使用模拟判定器。
 
+### HTTP 接口
+
+`POST /api/v1/aftersales/match-evidence`，请求体与命令行输入文件相同（`start_ms`、`end_ms`、`coverage`、`utterances`），返回 `analyze_match` 的结果。
+
+- 需要 `Authorization: Bearer <JWT>`，Claims 必含 `sub`、`studio_id`、`role`、`exp`，`role` 须为 `aftersales` 或 `admin`。缺令牌、签名错误或过期返回 401，其他角色返回 403。
+- 时间区间非法、发言为空、说话人不是 `player`/`system` 或发言 ID 重复返回 422（`ERR_VALIDATION`）。单次最多 5000 句发言、2000 段覆盖，单句不超过 2000 字。
+- 未配置 EVIDENCE_MODEL_URL / EVIDENCE_MODEL 时返回 503（`ERR_MODEL_NOT_CONFIGURED`）。模型单批调用失败不报错，相关发言转入 `review`。
+- 当前版本由调用方直接提交转写，接口只处理请求体内的文字，不读库。M3 转写入库后改为按 `session_id` 在令牌所属 `studio_id` 内取数。
+
+```powershell
+cd server
+.\.venv\Scripts\python -m uvicorn app.main:app --port 8000
+```
+
 按发言时间从分段录像裁切双轨语音（16 kHz mono WAV，供人工试听或送 ASR）：
 
 ```powershell

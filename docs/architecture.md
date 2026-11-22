@@ -369,6 +369,7 @@ CREATE INDEX idx_cases_studio_session
   ```
 - `GET /api/v1/aftersales/sessions/{session_id}/playback`：返回各切片签名播放 URL（有效期 1 小时）、双角色完整转写时间轴与缩略图索引，供前端连续/跳转播放。
 - `POST /api/v1/aftersales/cases`：保存售后人工核对记录与备注。
+- `POST /api/v1/aftersales/match-evidence`：单局辱骂证据分析（已实现），契约见 [match-evidence.md](match-evidence.md#http-接口)。
 
 ---
 

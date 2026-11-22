@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Literal
 from uuid import UUID
 from pydantic import BaseModel, Field
 
@@ -35,3 +36,47 @@ class SegmentInitUploadRequest(BaseModel):
     duration_ms: int = Field(ge=0)
     started_at: datetime
     ended_at: datetime
+
+
+class EvidenceInterval(BaseModel):
+    start_ms: int = Field(ge=0)
+    end_ms: int = Field(gt=0)
+
+
+class EvidenceUtterance(EvidenceInterval):
+    id: int = Field(ge=1)
+    speaker: Literal["player", "system"]
+    text: str = Field(min_length=1, max_length=2000)
+
+
+class MatchEvidenceRequest(BaseModel):
+    """Single-match input; times are ms offsets from the order session start."""
+
+    start_ms: int = Field(ge=0)
+    end_ms: int = Field(gt=0)
+    coverage: list[EvidenceInterval] = Field(max_length=2000)
+    utterances: list[EvidenceUtterance] = Field(max_length=5000)
+
+
+class EvidenceItem(EvidenceUtterance):
+    reason: str
+    target_evidence_ids: list[int]
+
+
+class EvidenceEvent(EvidenceInterval):
+    evidence: list[EvidenceItem]
+
+
+class EvidenceReview(EvidenceInterval):
+    id: int
+    reason: str
+
+
+class MatchEvidenceResponse(BaseModel):
+    status: Literal["analyzed", "needs_review"]
+    candidate_count: int
+    events: list[EvidenceEvent]
+    review: list[EvidenceReview]
+    coverage_gaps: list[EvidenceInterval]
+    target_utterances: int
+    analyzed_utterances: int
