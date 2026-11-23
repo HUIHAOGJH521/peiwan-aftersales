@@ -392,7 +392,7 @@ CREATE INDEX idx_cases_studio_session
 
 ### M2：客户端闲置后台断点续传与漏录补传（第 2 周）
 - **任务**：
-  1. 实现服务端 `client-login`、`config`、`sessions`、`init-upload`、`complete-upload` 接口及 MinIO/S3 预签名分片直传。
+  1. 实现服务端 `client-login`、`config`、`sessions`、`init-upload`、`complete-upload` 接口及 MinIO/S3 预签名分片直传。服务端契约与内存账本已落地（试点账号 `pilot_01` / `pw001`）；对象存储预签名目前返回可替换的本地 URL，接入 MinIO 时换成 S3 `UploadPart` 签名。
   2. 实现客户端后台上传调度器：仅接单切片入队、游戏运行期强制挂起、退游或空闲自动续传、断网/重启断点恢复。
   3. 实现客户端「3 天内本地私人片段查看与显式授权手动补传」面板。
 - **验收标准**：模拟接单中退出游戏 → 自动分片上传至 MinIO；上传中途启动游戏 → 上传毫秒级挂起；再次退游 → 从断点分片继续上传完成并校验 SHA256 一致；私人局切片默认 0 上传，手动授权后可补传。
