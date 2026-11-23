@@ -52,7 +52,9 @@ python -m app.audio_clip segment.mp4 --start-ms 1200 --end-ms 3800 --track playe
 
 ### 从本地录像开始
 
-在 server 目录运行。使用 FFmpeg 和本地 faster-whisper CPU 模型，`--model` 可以指定模型目录，默认读取缓存里的 small。
+在 server 目录运行。使用 FFmpeg 和本地 faster-whisper CPU 模型，`--model` 可以指定缓存名或模型目录，默认 `large-v3-turbo`（需已缓存，也可用 `small`，速度更快但准确率明显较低）。转写默认带领域提示词（三角洲行动陪玩售后术语，定义在 `app/match_recording.py` 的 `DEFAULT_INITIAL_PROMPT`）并启用 VAD 过滤。相关选项：`--initial-prompt TEXT`（传空字符串关闭提示词）、`--no-vad`、`--cpu-threads N`。
+
+限制：faster-whisper 1.2.1 在 `condition_on_previous_text=False` 时每个 30 秒窗口解码后都会重置 prompt，`initial_prompt` 只作用于首个窗口，所以代码同时把提示词作为 `hotwords` 传入（每个窗口都会拼入 prompt）。提示词只是偏置，不能保证术语一定被识别正确；large-v3-turbo 在 CPU 上比 small 慢得多，长录像请预留时间。
 
 ```powershell
 python -m pip install ".[local-asr]"

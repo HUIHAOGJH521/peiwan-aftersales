@@ -1,13 +1,16 @@
 import shutil
 import subprocess
+import sys
+import types
 import unittest
+from unittest import mock
 import wave
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from app.audio_clip import resolve_ffmpeg
 from app.match_analysis import Interval, analyze_match
-from app.match_recording import Recording, transcribe_match
+from app.match_recording import DEFAULT_INITIAL_PROMPT, DEFAULT_MODEL, LocalWhisper, Recording, transcribe_match
 
 
 FFMPEG = shutil.which(resolve_ffmpeg())
@@ -99,3 +102,48 @@ class MatchRecordingTests(unittest.TestCase):
         self.assertEqual(result["coverage_gaps"], [])
         self.assertEqual([row["start_ms"] for row in result["events"][0]["evidence"]],
                          [250, 1_250])
+
+
+class LocalWhisperTests(unittest.TestCase):
+    def build(self, **kwargs):
+        calls = {}
+
+        class FakeModel:
+            def __init__(self, name, **options):
+                calls["init"] = (name, options)
+
+            def transcribe(self, audio, **options):
+                calls["transcribe"] = (audio, options)
+                segment = types.SimpleNamespace(start=0.0, end=1.0, text="老板")
+                return iter([segment]), None
+
+        module = types.SimpleNamespace(WhisperModel=FakeModel)
+        with mock.patch.dict(sys.modules, {"faster_whisper": module}):
+            whisper = LocalWhisper("fake-model", "zh", **kwargs)
+        return whisper, calls
+
+    def test_defaults_pass_prompt_vad_and_threads(self):
+        whisper, calls = self.build()
+        spans = list(whisper(Path("a.wav")))
+        self.assertEqual(spans, [(0.0, 1.0, "老板")])
+        self.assertEqual(calls["init"][0], "fake-model")
+        self.assertEqual(calls["init"][1]["cpu_threads"], 0)
+        options = calls["transcribe"][1]
+        self.assertEqual(options["initial_prompt"], DEFAULT_INITIAL_PROMPT)
+        self.assertEqual(options["hotwords"], DEFAULT_INITIAL_PROMPT)
+        self.assertTrue(options["vad_filter"])
+        self.assertFalse(options["condition_on_previous_text"])
+        self.assertEqual(options["language"], "zh")
+        for word in ("老板", "投诉", "押金", "陪玩", "打手", "纠纷", "护航", "对赌",
+                     "证据不足", "工作室", "订单", "退款", "变声器", "店长", "曝光"):
+            self.assertIn(word, DEFAULT_INITIAL_PROMPT)
+        self.assertEqual(DEFAULT_MODEL, "large-v3-turbo")
+
+    def test_custom_options_are_forwarded(self):
+        whisper, calls = self.build(initial_prompt="", vad_filter=False, cpu_threads=6)
+        list(whisper(Path("a.wav")))
+        self.assertEqual(calls["init"][1]["cpu_threads"], 6)
+        options = calls["transcribe"][1]
+        self.assertIsNone(options["initial_prompt"])
+        self.assertIsNone(options["hotwords"])
+        self.assertFalse(options["vad_filter"])

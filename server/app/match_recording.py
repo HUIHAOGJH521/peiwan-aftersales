@@ -43,20 +43,51 @@ def guess_mixed_speaker(text: str) -> str:
     return "player"
 
 
+DEFAULT_MODEL = "large-v3-turbo"
+DEFAULT_INITIAL_PROMPT = (
+    "以下是三角洲行动陪玩售后的普通话对话,涉及老板、投诉、押金、陪玩、打手、纠纷、护航、"
+    "对赌、证据不足、工作室、订单、退款、变声器、店长、曝光。"
+)
+
+
 class LocalWhisper:
-    def __init__(self, model: str, language: str) -> None:
+    """faster-whisper wrapper.
+
+    faster-whisper 1.2.1 在 condition_on_previous_text=False 时,每个 30 秒窗口解码后都会
+    重置 prompt,initial_prompt 只作用于第一个窗口。因此提示词同时通过 hotwords 传入:
+    hotwords 在每个窗口都会拼进 prompt,长音频后段也能受益。
+    """
+
+    def __init__(
+        self,
+        model: str,
+        language: str,
+        *,
+        initial_prompt: str | None = DEFAULT_INITIAL_PROMPT,
+        vad_filter: bool = True,
+        cpu_threads: int = 0,
+    ) -> None:
         from faster_whisper import WhisperModel
 
-        self.model = WhisperModel(model, device="cpu", compute_type="int8")
+        self.model = WhisperModel(
+            model, device="cpu", compute_type="int8", cpu_threads=cpu_threads,
+        )
         self.language = language
+        self.initial_prompt = initial_prompt or None
+        self.vad_filter = vad_filter
 
     def __call__(self, audio: Path) -> Iterable[tuple[float, float, str]]:
         segments, _ = self.model.transcribe(
-            str(audio), language=self.language, beam_size=5, condition_on_previous_text=False,
+            str(audio),
+            language=self.language,
+            beam_size=5,
+            condition_on_previous_text=False,
+            initial_prompt=self.initial_prompt,
+            hotwords=self.initial_prompt,
+            vad_filter=self.vad_filter,
         )
         for segment in segments:
             yield segment.start, segment.end, segment.text
-
 
 def transcribe_match(
     match: Interval,
@@ -150,7 +181,12 @@ def transcribe_match(
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("manifest", type=Path)
-    parser.add_argument("--model", default="small", help="Whisper cache name or local model directory")
+    parser.add_argument("--model", default=DEFAULT_MODEL,
+                        help="Whisper cache name (e.g. large-v3-turbo, small) or local model directory")
+    parser.add_argument("--initial-prompt", default=DEFAULT_INITIAL_PROMPT,
+                        help="Domain prompt for Whisper; pass an empty string to disable")
+    parser.add_argument("--no-vad", action="store_true", help="Disable the VAD filter")
+    parser.add_argument("--cpu-threads", type=int, default=0, help="CPU threads (0 = library default)")
     parser.add_argument("--language", default="zh")
     parser.add_argument("--ffmpeg", help="FFmpeg executable (defaults to FFMPEG_PATH or PATH)")
     parser.add_argument("--transcript-only", action="store_true")
@@ -176,7 +212,10 @@ def main() -> None:
         except ValueError:
             parser.error("请配置证据模型地址和模型名，或使用 --transcript-only")
     try:
-        transcriber = LocalWhisper(args.model, args.language)
+        transcriber = LocalWhisper(
+            args.model, args.language, initial_prompt=args.initial_prompt,
+            vad_filter=not args.no_vad, cpu_threads=args.cpu_threads,
+        )
     except ImportError:
         parser.error("请安装 local-asr 依赖")
     except (OSError, RuntimeError, ValueError):
