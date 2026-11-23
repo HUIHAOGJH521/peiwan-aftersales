@@ -14,6 +14,7 @@ from tempfile import TemporaryDirectory
 from app.audio_clip import extract_utterance_clip, resolve_ffmpeg
 from app.match_analysis import Interval, Utterance, analyze_match
 from app.match_evidence import ChatClassifier
+from app.term_correction import correct_terms
 
 
 @dataclass(frozen=True)
@@ -88,6 +89,39 @@ class LocalWhisper:
         )
         for segment in segments:
             yield segment.start, segment.end, segment.text
+
+class TermCorrectingTranscriber:
+    """Wrap a transcriber: apply correct_terms per sentence, keep timestamps, log corrections.
+
+    Record spans (start_s/end_s) are relative to the transcribed clip, as returned by the
+    wrapped transcriber; ``start``/``end`` are character offsets in the original sentence.
+    """
+
+    def __init__(self, inner: Callable[[Path], Iterable[tuple[float, float, str]]]) -> None:
+        self.inner = inner
+        self.corrections: list[dict] = []
+
+    def __call__(self, audio: Path) -> Iterable[tuple[float, float, str]]:
+        for begin, finish, text in self.inner(audio):
+            if isinstance(text, str):
+                fixed, records = correct_terms(text)
+                for record in records:
+                    self.corrections.append({
+                        "start_s": begin, "end_s": finish, "sentence": text, **record,
+                    })
+                text = fixed
+            yield begin, finish, text
+
+
+def build_transcriber(args: argparse.Namespace):
+    if args.asr_backend == "funasr":
+        from app.asr_funasr import FunASRTranscriber
+        return FunASRTranscriber()
+    return LocalWhisper(
+        args.model, args.language, initial_prompt=args.initial_prompt,
+        vad_filter=not args.no_vad, cpu_threads=args.cpu_threads,
+    )
+
 
 def transcribe_match(
     match: Interval,
@@ -181,6 +215,10 @@ def transcribe_match(
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("manifest", type=Path)
+    parser.add_argument("--asr-backend", choices=("funasr", "whisper"), default="funasr",
+                        help="Transcription engine (default: funasr; whisper uses faster-whisper)")
+    parser.add_argument("--no-term-correction", action="store_true",
+                        help="Disable lexicon-based term correction of transcripts")
     parser.add_argument("--model", default=DEFAULT_MODEL,
                         help="Whisper cache name (e.g. large-v3-turbo, small) or local model directory")
     parser.add_argument("--initial-prompt", default=DEFAULT_INITIAL_PROMPT,
@@ -212,14 +250,15 @@ def main() -> None:
         except ValueError:
             parser.error("请配置证据模型地址和模型名，或使用 --transcript-only")
     try:
-        transcriber = LocalWhisper(
-            args.model, args.language, initial_prompt=args.initial_prompt,
-            vad_filter=not args.no_vad, cpu_threads=args.cpu_threads,
-        )
+        transcriber = build_transcriber(args)
     except ImportError:
-        parser.error("请安装 local-asr 依赖")
+        parser.error("请安装 funasr-asr 额外包" if args.asr_backend == "funasr"
+                     else "请安装 local-asr 额外包")
     except (OSError, RuntimeError, ValueError):
-        parser.error("无法加载本地 Whisper 模型，请检查缓存或 --model 路径")
+        parser.error("无法加载本地 ASR 模型，请检查模型缓存或 --model 路径")
+    corrector = None
+    if not args.no_term_correction:
+        corrector = transcriber = TermCorrectingTranscriber(transcriber)
     try:
         coverage, utterances, issues = transcribe_match(
             match,
@@ -239,6 +278,8 @@ def main() -> None:
         "utterances": [asdict(item) for item in utterances],
         "media_issues": issues,
     }
+    if corrector is not None:
+        result["term_corrections"] = corrector.corrections
     if classifier is not None:
         result["analysis"] = analyze_match(match, coverage, utterances, classifier)
     print(json.dumps(result, ensure_ascii=True, indent=2))

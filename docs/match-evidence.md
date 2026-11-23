@@ -57,10 +57,17 @@ python -m app.audio_clip segment.mp4 --start-ms 1200 --end-ms 3800 --track playe
 限制：faster-whisper 1.2.1 在 `condition_on_previous_text=False` 时每个 30 秒窗口解码后都会重置 prompt，`initial_prompt` 只作用于首个窗口，所以代码同时把提示词作为 `hotwords` 传入（每个窗口都会拼入 prompt）。提示词只是偏置，不能保证术语一定被识别正确；large-v3-turbo 在 CPU 上比 small 慢得多，长录像请预留时间。
 
 ```powershell
-python -m pip install ".[local-asr]"
+python -m pip install ".[funasr-asr]"   # 默认后端 FunASR
+python -m pip install ".[local-asr]"    # 仅 --asr-backend whisper 需要
 python -m app.match_recording match.json --transcript-only
 python -m app.match_recording match.json
 ```
+
+转写后端与术语纠错：
+
+- `--asr-backend {funasr,whisper}`，默认 `funasr`（paraformer-zh + fsmn-vad + ct-punc，句级时间戳，首次运行经 modelscope 下载模型）；`whisper` 保留原 faster-whisper 行为，`--model`、`--initial-prompt`、`--no-vad`、`--cpu-threads` 仅对 whisper 生效。实现见 `server/app/asr_funasr.py`。
+- 默认对每个转写句应用 `term_correction.correct_terms`（同音/近音术语词表纠错），不改变时间戳；`--no-term-correction` 关闭。纠偏记录写入输出 JSON 的 `term_corrections`（`start_s`/`end_s` 为所转写音频片段内的秒，`sentence` 为原句，`start`/`end` 为原句内字符偏移，`original`/`replacement`），便于审计。
+- funasr 的日志输出被重定向到 stderr，stdout 只有 JSON。
 
 `--transcript-only` 只在本地转写。省略此选项会调用已配置的证据模型，返回 `analysis`、转写和媒体问题。清单示例中的路径相对清单目录，时间为接单会话起点的毫秒偏移。
 

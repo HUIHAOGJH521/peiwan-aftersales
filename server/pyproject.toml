@@ -19,6 +19,7 @@ dependencies = [
 
 [project.optional-dependencies]
 local-asr = ["faster-whisper>=1.2,<2"]
+funasr-asr = ["funasr>=1.4,<2", "modelscope>=1.30", "torch>=2.2", "torchaudio>=2.2", "librosa", "soundfile"]
 dev = ["httpx>=0.27"]
 
 [build-system]
