@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>陪玩售后 · 最小核对台</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #1c1915;
+      --muted: #6b645c;
+      --line: #e4ddd4;
+      --paper: #f7f3ee;
+      --card: #fffdf9;
+      --review: #9a3412;
+      --review-bg: #fff1e6;
+      --ok: #3f6212;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: end;
+      padding: 20px 24px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    h1 { font-size: 1.25rem; margin: 0; font-weight: 650; }
+    p { margin: 4px 0 0; color: var(--muted); font-size: 0.92rem; }
+    main {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      min-height: calc(100vh - 78px);
+    }
+    aside, section { padding: 16px; }
+    aside { border-right: 1px solid var(--line); }
+    button, .sample {
+      font: inherit;
+      text-align: left;
+      width: 100%;
+      border: 1px solid var(--line);
+      background: var(--card);
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+    .sample[aria-current="true"] { border-color: #1c1915; }
+    button { display: block; }
+    .sample small { display: block; color: var(--muted); margin-top: 4px; }
+    #run {
+      width: auto;
+      background: #1c1915;
+      color: #fffdf9;
+      border: 0;
+      padding: 8px 14px;
+    }
+    #run:disabled { opacity: 0.5; cursor: wait; }
+    .toolbar { display: flex; justify-content: space-between; gap: 12px; align-items: center; margin-bottom: 12px; }
+    ol { list-style: none; margin: 0; padding: 0; }
+    li {
+      display: grid;
+      grid-template-columns: 92px 1fr;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    time { color: var(--muted); font-variant-numeric: tabular-nums; font-size: 0.85rem; }
+    li.review { background: var(--review-bg); margin: 0 -8px; padding: 8px; border-radius: 8px; }
+    li.review .tag { color: var(--review); font-size: 0.8rem; }
+    #status { color: var(--muted); }
+    button.choice { width: auto; display: inline-block; margin: 6px 6px 0 0; padding: 4px 8px; }
+    input.note { width: 100%; margin-top: 6px; font: inherit; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; }
+    #gate {
+      max-width: 420px;
+      margin: 48px auto;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    label { display: block; margin: 12px 0 4px; font-size: 0.9rem; }
+    input {
+      width: 100%;
+      font: inherit;
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+    #login {
+      margin-top: 16px;
+      background: #1c1915;
+      color: #fffdf9;
+      border: 0;
+      text-align: center;
+    }
+    #login-error { color: var(--review); min-height: 1.2em; }
+    main[hidden] { display: none; }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>陪玩售后核对台</h1>
+      <p>最小版：选一段已转写的真实社媒样本，标出待复核的纠纷用语。还不是云端模型和双轨录像。</p>
+    </div>
+    <p id="status">正在加载样本</p>
+  </header>
+  <form id="gate">
+    <h2>登录试点工作室</h2>
+    <p>用你自己的浏览器打开 <strong>http://127.0.0.1:8777/</strong>。不要用 https，也不要换端口。</p>
+    <label for="studio">工作室代码</label>
+    <input id="studio" name="studio_code" autocomplete="organization" value="pilot_01" required>
+    <label for="username">账号</label>
+    <input id="username" name="username" autocomplete="username" value="pw001" required>
+    <label for="password">密码</label>
+    <input id="password" name="password" type="password" autocomplete="current-password" value="pilot-dev-pass" required>
+    <p id="login-error" role="alert"></p>
+    <button id="login" type="submit">登录</button>
+  </form>
+  <main hidden>
+    <aside>
+      <div id="samples"></div>
+      <h2>已记录的结论</h2>
+      <div id="records"></div>
+    </aside>
+    <section>
+      <div class="toolbar">
+        <div>
+          <strong id="title">选择左侧样本</strong>
+          <p id="summary"></p>
+        </div>
+        <button id="run" type="button" disabled>分析这段</button>
+      </div>
+      <ol id="lines"></ol>
+    </section>
+  </main>
+  <script>
+    const samplesEl = document.querySelector("#samples");
+    const linesEl = document.querySelector("#lines");
+    const statusEl = document.querySelector("#status");
+    const runBtn = document.querySelector("#run");
+    let current = null;
+    let utterances = [];
+
+    function clock(ms) {
+      const total = Math.max(0, Math.floor(ms / 1000));
+      const m = String(Math.floor(total / 60)).padStart(2, "0");
+      const s = String(total % 60).padStart(2, "0");
+      return `${m}:${s}`;
+    }
+
+    function setStatus(text, bad) {
+      statusEl.textContent = text;
+      statusEl.className = bad ? "bad" : "";
+    }
+
+    let verdicts = new Map();
+
+    function verdictKey(id) { return `${current}:${id}`; }
+
+    function addVerdictControls(parent, row) {
+      const saved = verdicts.get(row.id);
+      const actions = document.createElement("div");
+      for (const label of ["成立", "不成立", "再看"]) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "choice";
+        button.textContent = label;
+        if (saved && saved.verdict === label) button.setAttribute("aria-pressed", "true");
+        button.addEventListener("click", () => saveVerdict(row, label, note.value));
+        actions.append(button);
+      }
+      const note = document.createElement("input");
+      note.className = "note";
+      note.maxLength = 200;
+      note.placeholder = "备注，可空";
+      note.value = saved ? saved.note : "";
+      if (saved) {
+        const mark = document.createElement("div");
+        mark.className = "tag";
+        mark.textContent = `已记录：${saved.verdict}`;
+        parent.append(mark);
+      }
+      parent.append(actions, note);
+    }
+
+    async function saveVerdict(row, verdict, note) {
+      const response = await fetch(`/api/v1/demo/samples/${current}/verdicts`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          utterance_id: row.id, start_ms: row.start_ms, text: row.text, verdict, note,
+        }),
+      });
+      if (!response.ok) {
+        setStatus("结论没有保存", true);
+        return;
+      }
+      verdicts.set(row.id, await response.json());
+      renderLines(lastFlags);
+      setStatus(`已记录：${verdict}`);
+      loadVerdicts();
+    }
+
+    let lastFlags = new Map();
+
+    function renderLines(flags) {
+      lastFlags = flags;
+      linesEl.replaceChildren();
+      for (const row of utterances) {
+        const item = document.createElement("li");
+        const saved = verdicts.get(row.id);
+        if (flags.get(row.id) || saved) item.className = "review";
+        const time = document.createElement("time");
+        time.textContent = clock(row.start_ms);
+        const text = document.createElement("div");
+        text.textContent = row.text;
+        if (flags.get(row.id)) {
+          const tag = document.createElement("div");
+          tag.className = "tag";
+          tag.textContent = flags.get(row.id);
+          text.append(tag);
+        }
+        if (flags.get(row.id) || saved) addVerdictControls(text, row);
+        item.append(time, text);
+        linesEl.append(item);
+      }
+    }
+
+    async function openSample(id) {
+      current = id;
+      runBtn.disabled = true;
+      for (const button of samplesEl.querySelectorAll(".sample")) {
+        button.setAttribute("aria-current", button.dataset.id === id ? "true" : "false");
+      }
+      const response = await fetch(`/api/v1/demo/samples/${id}`);
+      if (!response.ok) {
+        setStatus("样本读取失败", true);
+        return;
+      }
+      const data = await response.json();
+      document.querySelector("#title").textContent = data.title;
+      document.querySelector("#summary").textContent = data.summary;
+      utterances = data.utterances;
+      await loadVerdicts();
+      renderLines(new Map());
+      runBtn.disabled = false;
+      setStatus(`${utterances.length} 句`);
+    }
+
+    async function loadSamples() {
+      const response = await fetch("/api/v1/demo/samples");
+      const data = await response.json();
+      samplesEl.replaceChildren();
+      for (const sample of data.samples) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "sample";
+        button.dataset.id = sample.id;
+        const title = document.createElement("strong");
+        title.textContent = sample.title;
+        const note = document.createElement("small");
+        note.textContent = sample.summary;
+        button.append(title, note);
+        button.addEventListener("click", () => openSample(sample.id));
+        samplesEl.append(button);
+      }
+      if (data.samples[0]) await openSample(data.samples[0].id);
+      else setStatus("没有样本文件", true);
+    }
+
+    runBtn.addEventListener("click", async () => {
+      if (!current) return;
+      runBtn.disabled = true;
+      setStatus("分析中");
+      const response = await fetch(`/api/v1/demo/samples/${current}/analyze`, { method: "POST" });
+      runBtn.disabled = false;
+      if (!response.ok) {
+        setStatus("分析失败", true);
+        return;
+      }
+      const data = await response.json();
+      const flags = new Map();
+      for (const row of data.analysis.review) flags.set(row.id, row.reason);
+      renderLines(flags);
+      setStatus(`${data.analysis.status} · 待复核 ${data.analysis.review.length} 句 · 候选 ${data.analysis.candidate_count}`);
+      loadRecords();
+    });
+
+    const gate = document.querySelector("#gate");
+    const workbench = document.querySelector("main");
+
+    document.querySelector("#gate").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const error = document.querySelector("#login-error");
+      error.textContent = "";
+      const body = {
+        studio_code: document.querySelector("#studio").value.trim(),
+        username: document.querySelector("#username").value.trim(),
+        password: document.querySelector("#password").value,
+        device_fp: "browser-demo-device",
+        gpu_encoder: "unknown",
+        client_version: "0.1.0",
+      };
+      let response;
+      try {
+        response = await fetch("/api/v1/auth/client-login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+      } catch {
+        error.textContent = "连不上本机服务。请确认地址是 http://127.0.0.1:8777/ ，并且核对台程序还在运行。";
+        return;
+      }
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        error.textContent = payload.message || "登录失败";
+        return;
+      }
+      sessionStorage.setItem("peiwan_token", payload.access_token);
+      gate.hidden = true;
+      workbench.hidden = false;
+      document.querySelector("#status").textContent = payload.player.display_name;
+      loadSamples();
+      loadRecords();
+    });
+
+    async function loadVerdicts() {
+      const box = document.querySelector("#records");
+      const response = await fetch(`/api/v1/demo/verdicts?sample_id=${encodeURIComponent(current || "")}`);
+      if (!response.ok) {
+        box.textContent = "结论读取失败";
+        return;
+      }
+      const data = await response.json();
+      verdicts = new Map(data.verdicts.map((row) => [row.utterance_id, row]));
+      box.replaceChildren();
+      if (!data.verdicts.length) {
+        box.textContent = "还没有人工结论";
+        return;
+      }
+      for (const row of data.verdicts) {
+        const item = document.createElement("p");
+        item.textContent = `${row.verdict} · ${row.text.slice(0, 18)}`;
+        box.append(item);
+      }
+    }
+
+    async function loadRecords() {
+      await loadVerdicts();
+    }
+  </script>
+</body>
+</html>
