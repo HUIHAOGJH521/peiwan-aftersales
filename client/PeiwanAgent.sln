@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeiwanAgent.Recorder.Audio"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeiwanAgent.Recorder", "PeiwanAgent.Recorder\PeiwanAgent.Recorder.csproj", "{15A2E9AA-86F0-4A1B-A41D-41DC7F00CD1F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeiwanAgent.Recorder.Audio.Tests", "PeiwanAgent.Recorder.Audio.Tests\PeiwanAgent.Recorder.Audio.Tests.csproj", "{8938CE7D-D5B0-4459-AC46-7191175CDED6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeiwanAgent.Recorder.Tests", "PeiwanAgent.Recorder.Tests\PeiwanAgent.Recorder.Tests.csproj", "{88803DB2-D7C4-4F9C-B286-D3230AF2DF7A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +46,13 @@ Global
 		{15A2E9AA-86F0-4A1B-A41D-41DC7F00CD1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15A2E9AA-86F0-4A1B-A41D-41DC7F00CD1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{15A2E9AA-86F0-4A1B-A41D-41DC7F00CD1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8938CE7D-D5B0-4459-AC46-7191175CDED6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8938CE7D-D5B0-4459-AC46-7191175CDED6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8938CE7D-D5B0-4459-AC46-7191175CDED6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8938CE7D-D5B0-4459-AC46-7191175CDED6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88803DB2-D7C4-4F9C-B286-D3230AF2DF7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88803DB2-D7C4-4F9C-B286-D3230AF2DF7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88803DB2-D7C4-4F9C-B286-D3230AF2DF7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88803DB2-D7C4-4F9C-B286-D3230AF2DF7A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

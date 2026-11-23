@@ -7,4 +7,7 @@
   <ItemGroup>
     <ProjectReference Include="..\PeiwanAgent.Core\PeiwanAgent.Core.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="NAudio" Version="2.2.1" />
+  </ItemGroup>
 </Project>
