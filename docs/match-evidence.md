@@ -23,6 +23,14 @@
 - 未配置 EVIDENCE_MODEL_URL / EVIDENCE_MODEL 时返回 503（`ERR_MODEL_NOT_CONFIGURED`）。模型单批调用失败不报错，相关发言转入 `review`。
 - 当前版本由调用方直接提交转写，接口只处理请求体内的文字，不读库。M3 转写入库后改为按 `session_id` 在令牌所属 `studio_id` 内取数。
 
+#### 按会话取转写（服务端存储）
+
+- `PUT /api/v1/aftersales/sessions/{session_id}/transcript`：请求体 `coverage`、`utterances`（格式同上，不含 `start_ms`/`end_ms` 顶层字段）。整体覆盖该会话已有转写，返回 `session_id`、`utterance_count`、`coverage_count`。`studio_id` 取自 JWT。会话不存在或属于其他工作室返回 404（`ERR_NOT_FOUND`）；发言 ID 重复或区间非法返回 422。
+- `POST /api/v1/aftersales/sessions/{session_id}/match-evidence`：请求体只含 `start_ms`、`end_ms`。服务端按 `(studio_id, session_id)` 从库读取转写和覆盖区间，再调用 `analyze_match`，响应与上面的接口相同。该工作室没有此会话的转写（包括会话属于别的工作室）一律返回 404，不区分原因。
+- 两个接口都要求 `aftersales` 或 `admin` 角色（401/403 规则同上）。POST 在未配置模型时返回 503（`ERR_MODEL_NOT_CONFIGURED`），该检查先于 404。
+- 存储为 SQLite（`server/app/transcripts.py`，与 `records.py` 共用 `PEIWAN_RECORDS_DB`/`data/records.db`），表 `transcripts`、`transcript_utterances`、`transcript_coverage`，主键均以 `studio_id` 开头，所有读写必须带 `studio_id`。
+- PUT 校验会话时使用进程内的 `ClientState`，服务重启后需客户端重新同步会话才能再次写入；已保存的转写不受影响。
+
 ```powershell
 cd server
 .\.venv\Scripts\python -m uvicorn app.main:app --port 8000

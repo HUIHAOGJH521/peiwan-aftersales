@@ -80,3 +80,21 @@ class MatchEvidenceResponse(BaseModel):
     coverage_gaps: list[EvidenceInterval]
     target_utterances: int
     analyzed_utterances: int
+
+
+class TranscriptPutRequest(BaseModel):
+    """Full replacement transcript of one session; times are ms offsets from the session start."""
+
+    coverage: list[EvidenceInterval] = Field(max_length=2000)
+    utterances: list[EvidenceUtterance] = Field(max_length=5000)
+
+
+class TranscriptPutResponse(BaseModel):
+    session_id: str
+    utterance_count: int
+    coverage_count: int
+
+
+class SessionMatchEvidenceRequest(BaseModel):
+    start_ms: int = Field(ge=0)
+    end_ms: int = Field(gt=0)
