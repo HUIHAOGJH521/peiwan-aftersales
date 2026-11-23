@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeiwanAgent.Core", "PeiwanAgent.Core\PeiwanAgent.Core.csproj", "{990E584D-A3DF-4782-9BC9-274860D6410D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeiwanAgent.Tests", "PeiwanAgent.Tests\PeiwanAgent.Tests.csproj", "{394CA442-E5EA-4F9A-B3A0-0FDEB699A02A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeiwanAgent.Tray", "PeiwanAgent.Tray\PeiwanAgent.Tray.csproj", "{23E9CBC0-1A68-48B4-B4F9-F156EADE542A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{990E584D-A3DF-4782-9BC9-274860D6410D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{990E584D-A3DF-4782-9BC9-274860D6410D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{990E584D-A3DF-4782-9BC9-274860D6410D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{990E584D-A3DF-4782-9BC9-274860D6410D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{394CA442-E5EA-4F9A-B3A0-0FDEB699A02A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{394CA442-E5EA-4F9A-B3A0-0FDEB699A02A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{394CA442-E5EA-4F9A-B3A0-0FDEB699A02A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{394CA442-E5EA-4F9A-B3A0-0FDEB699A02A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23E9CBC0-1A68-48B4-B4F9-F156EADE542A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23E9CBC0-1A68-48B4-B4F9-F156EADE542A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23E9CBC0-1A68-48B4-B4F9-F156EADE542A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23E9CBC0-1A68-48B4-B4F9-F156EADE542A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
